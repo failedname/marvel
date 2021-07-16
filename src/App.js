@@ -1,23 +1,67 @@
-import logo from './logo.svg';
-import './App.css';
+import Header from "./Header";
+import ListItem from "./listitem";
+import Search from "./search";
+import md5 from "md5";
+import { publicKey, secrectkey, ts, url } from "./apikey";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 function App() {
+  const [hero, setHero] = useState([]);
+
+  useEffect(() => {
+    const resData = async () => {
+      await axios
+        .get(url, {
+          params: {
+            ts: ts,
+            apikey: publicKey,
+            hash: md5(`${ts}${secrectkey}${publicKey}`),
+          },
+        })
+
+        .then((json) => setHero(json.data.data));
+    };
+
+    resData();
+  }, []);
+  function newList() {
+    const newL = async () => {
+      await axios
+        .get(url, {
+          params: {
+            ts: ts,
+            apikey: publicKey,
+            hash: md5(`${ts}${secrectkey}${publicKey}`),
+            limit: 20,
+            offset: hero.offset + 20,
+          },
+        })
+        .then((json) => setHero(json.data.data));
+    };
+    newL();
+  }
+  function searchHandler(data) {
+    const newDat = async () => {
+      await axios
+        .get(url, {
+          params: {
+            nameStartsWith: data,
+            ts: ts,
+            apikey: publicKey,
+            hash: md5(`${ts}${secrectkey}${publicKey}`),
+          },
+        })
+        .then((json) => setHero(json.data.data));
+    };
+    newDat();
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Header></Header>
+      <Search onUpdate={newList} searchHandler={searchHandler}></Search>
+      <ListItem data={hero}></ListItem>
     </div>
   );
 }
