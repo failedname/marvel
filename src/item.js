@@ -3,7 +3,6 @@ import { Fragment } from "react";
 
 function Item(props) {
   const { data } = props.location.state;
-  console.log(data);
   return (
     <Fragment>
       <Header></Header>
@@ -17,7 +16,7 @@ function Item(props) {
             </div>
             <div className='content'>
               <div className='header'>{data.name}</div>
-              <div class='description'>{data.description}</div>
+              <div className='description'>{data.description}</div>
             </div>
           </div>
         </div>

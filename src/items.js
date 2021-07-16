@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { Link, BrowserRouter as Router } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const redImg = {
   height: "220px",
@@ -7,32 +7,30 @@ const redImg = {
 
 function Item({ data }) {
   return (
-    <Router>
-      <Fragment>
-        {data.map((list) => (
-          <div key={list.id} className='four wide column'>
-            <div className='ui card'>
-              <div className='image'>
-                <img
-                  style={redImg}
-                  alt={list.name}
-                  src={`${list.thumbnail.path}.${list.thumbnail.extension}`}></img>
-              </div>
-              <div className='content'>
-                <Link
-                  to={{ pathname: `/${list.id}`, state: { data: list } }}
-                  className='header'>
-                  {list.name}
-                </Link>
-                <div className='meta'>
-                  <span className='date'></span>
-                </div>
+    <Fragment>
+      {data.map((list) => (
+        <div key={list.id} className='four wide column'>
+          <div className='ui card'>
+            <div className='image'>
+              <img
+                style={redImg}
+                alt={list.name}
+                src={`${list.thumbnail.path}.${list.thumbnail.extension}`}></img>
+            </div>
+            <div className='content'>
+              <Link
+                to={{ pathname: `/${list.id}`, state: { data: list } }}
+                className='header'>
+                {list.name}
+              </Link>
+              <div className='meta'>
+                <span className='date'></span>
               </div>
             </div>
           </div>
-        ))}
-      </Fragment>
-    </Router>
+        </div>
+      ))}
+    </Fragment>
   );
 }
 
